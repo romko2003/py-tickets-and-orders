@@ -85,3 +85,21 @@ class Genre(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class CinemaHall(models.Model):
+    name = models.CharField(max_length=255)
+    rows = models.IntegerField()
+    seats_in_row = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class MovieSession(models.Model):
+    movie = models.ForeignKey("Movie", on_delete=models.CASCADE)
+    cinema_hall = models.ForeignKey("CinemaHall", on_delete=models.CASCADE)
+    show_time = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.movie.title} in {self.cinema_hall.name} at {self.show_time}"
