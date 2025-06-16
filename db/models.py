@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -9,17 +11,25 @@ class User(AbstractUser):
     pass
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     duration = models.PositiveIntegerField(default=90)
+    genres = models.ManyToManyField(Genre, blank=True)
 
     def __str__(self) -> str:
         return self.title
 
 
 class Order(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -29,7 +39,7 @@ class Order(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"<Order: {self.created_at}>"
+        return str(self.created_at)
 
 
 class Ticket(models.Model):
@@ -83,13 +93,6 @@ class Actor(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
-
-
-class Genre(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self) -> str:
-        return self.name
 
 
 class CinemaHall(models.Model):
