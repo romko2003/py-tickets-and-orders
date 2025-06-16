@@ -2,6 +2,11 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from typing import Any
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    pass
 
 
 class Movie(models.Model):
