@@ -7,8 +7,9 @@ from typing import Any
 class Movie(models.Model):
     title = models.CharField(max_length=255, db_index=True)
     description = models.TextField()
+    genres = models.ManyToManyField("Genre", related_name="movies")
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.title
 
 
