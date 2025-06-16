@@ -1,5 +1,5 @@
 from django.db.models import QuerySet
-
+from django.db import transaction
 from db.models import Movie
 
 
@@ -28,13 +28,24 @@ def create_movie(
     genres_ids: list = None,
     actors_ids: list = None,
 ) -> Movie:
-    movie = Movie.objects.create(
-        title=movie_title,
-        description=movie_description,
-    )
     if genres_ids:
-        movie.genres.set(genres_ids)
+        for genre_id in genres_ids:
+            if not isinstance(genre_id, int):
+                raise ValueError("Invalid genre id")
+
     if actors_ids:
-        movie.actors.set(actors_ids)
+        for actor_id in actors_ids:
+            if not isinstance(actor_id, int):
+                raise ValueError("Invalid actor id")
+
+    with transaction.atomic():
+        movie = Movie.objects.create(
+            title=movie_title,
+            description=movie_description,
+        )
+        if genres_ids:
+            movie.genres.set(genres_ids)
+        if actors_ids:
+            movie.actors.set(actors_ids)
 
     return movie
