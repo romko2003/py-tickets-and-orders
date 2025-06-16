@@ -97,7 +97,7 @@ class CinemaHall(models.Model):
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -106,5 +106,6 @@ class MovieSession(models.Model):
     cinema_hall = models.ForeignKey("CinemaHall", on_delete=models.CASCADE)
     show_time = models.DateTimeField()
 
-    def __str__(self):
-        return f"{self.movie.title} in {self.cinema_hall.name} at {self.show_time}"
+    def __str__(self) -> str:
+        return (f"{self.movie.title} "
+                f"in {self.cinema_hall.name} at {self.show_time}")
