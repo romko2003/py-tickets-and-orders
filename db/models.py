@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from typing import Any
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+
 
 now = datetime.datetime.now()
 
@@ -45,8 +47,10 @@ class Order(models.Model):
 
 
 class Ticket(models.Model):
-    movie_session = models.ForeignKey("MovieSession", on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    movie_session = models.ForeignKey("MovieSession",
+                                      on_delete=models.CASCADE)
+    order = models.ForeignKey(Order,
+                              on_delete=models.CASCADE)
     row = models.IntegerField()
     seat = models.IntegerField()
 
@@ -107,8 +111,10 @@ class CinemaHall(models.Model):
 
 
 class MovieSession(models.Model):
-    movie = models.ForeignKey("Movie", on_delete=models.CASCADE)
-    cinema_hall = models.ForeignKey("CinemaHall", on_delete=models.CASCADE)
+    movie = models.ForeignKey("Movie",
+                              on_delete=models.CASCADE)
+    cinema_hall = models.ForeignKey("CinemaHall",
+                                    on_delete=models.CASCADE)
     show_time = models.DateTimeField()
 
     def __str__(self) -> str:
