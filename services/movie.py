@@ -1,8 +1,16 @@
+from typing import Optional, List
 from django.db import transaction
+
+from db import models
 from db.models import Movie
+from django.db.models import QuerySet
 
 
-def get_movies(title=None, genres_ids=None, actors_ids=None):
+def get_movies(
+    title: Optional[str] = None,
+    genres_ids: Optional[List[int]] = None,
+    actors_ids: Optional[List[int]] = None
+) -> models.QuerySet:
     queryset = Movie.objects.all()
 
     if title:
