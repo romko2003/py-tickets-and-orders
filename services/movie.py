@@ -1,7 +1,6 @@
 from typing import Optional, List
 from django.db import transaction
-
-from db import models
+from django.db.models import QuerySet
 from db.models import Movie
 
 
@@ -9,7 +8,7 @@ def get_movies(
     title: Optional[str] = None,
     genres_ids: Optional[List[int]] = None,
     actors_ids: Optional[List[int]] = None
-) -> models.QuerySet:
+) -> QuerySet:
     queryset = Movie.objects.all()
 
     if title:
@@ -29,8 +28,8 @@ def get_movie_by_id(movie_id: int) -> Movie:
 def create_movie(
     movie_title: str,
     movie_description: str,
-    genres_ids: list = None,
-    actors_ids: list = None,
+    genres_ids: Optional[List[int]] = None,
+    actors_ids: Optional[List[int]] = None,
 ) -> Movie:
     if genres_ids:
         for genre_id in genres_ids:
