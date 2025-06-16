@@ -69,3 +69,10 @@ class Ticket(models.Model):
             f"{self.movie_session.show_time} "
             f"(row: {self.row}, seat: {self.seat})>"
         )
+
+class Actor(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
