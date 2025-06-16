@@ -1,10 +1,12 @@
-from datetime import timezone
+import datetime
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from typing import Any
 from django.contrib.auth.models import AbstractUser
+
+now = datetime.datetime.now()
 
 
 class User(AbstractUser):
