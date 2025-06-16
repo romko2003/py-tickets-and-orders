@@ -10,9 +10,9 @@ class User(AbstractUser):
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255, db_index=True)
-    description = models.TextField()
-    genres = models.ManyToManyField("Genre", related_name="movies")
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    duration = models.PositiveIntegerField(default=90)
 
     def __str__(self) -> str:
         return self.title
