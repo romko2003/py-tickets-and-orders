@@ -70,6 +70,7 @@ class Ticket(models.Model):
             f"(row: {self.row}, seat: {self.seat})>"
         )
 
+
 class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
