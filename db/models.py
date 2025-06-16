@@ -1,24 +1,29 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Model
+from typing import Any
 
 
 class Movie(models.Model):
     title = models.CharField(max_length=255, db_index=True)
     description = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         ordering = ["-created_at"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<Order: {self.created_at}>"
 
 
@@ -36,7 +41,7 @@ class Ticket(models.Model):
             )
         ]
 
-    def clean(self):
+    def clean(self) -> None:
         max_rows = self.movie_session.cinema_hall.rows
         max_seats = self.movie_session.cinema_hall.seats_in_row
 
@@ -44,21 +49,24 @@ class Ticket(models.Model):
 
         if not (1 <= self.row <= max_rows):
             errors["row"] = [
-                f"row number must be in available range: (1, rows): (1, {max_rows})"
+                f"row number must be in available range: "
+                f"(1, rows): (1, {max_rows})"
             ]
         if not (1 <= self.seat <= max_seats):
             errors["seat"] = [
-                f"seat number must be in available range: (1, seats_in_row): (1, {max_seats})"
+                f"seat number must be in available range: "
+                f"(1, seats_in_row): (1, {max_seats})"
             ]
         if errors:
             raise ValidationError(errors)
 
-    def save(self, *args, **kwargs):
-        self.full_clean()  # викликає clean()
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.full_clean()
         super().save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"<Ticket: {self.movie_session.movie.title} "
-            f"{self.movie_session.show_time} (row: {self.row}, seat: {self.seat})>"
+            f"{self.movie_session.show_time} "
+            f"(row: {self.row}, seat: {self.seat})>"
         )
